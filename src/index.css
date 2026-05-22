@@ -1,0 +1,238 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #e3eafc;
+    margin: 0;
+    padding: 0;
+}
+
+.main-header {
+    background: #003366;
+    color: #fff;
+    padding: 0.5em 0 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    padding: 0 2em;
+    position: relative;
+}
+
+.logo-header {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.main-header h1 {
+    font-size: 1.3em;
+    margin: 0;
+    line-height: 1.2em;
+    flex: 1;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2em;
+    cursor: pointer;
+    margin-left: 1em;
+}
+
+.main-menu {
+    background: #0056b3;
+    padding: 0.5em 2em;
+}
+
+.main-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5em;
+}
+
+.main-menu ul li {
+    position: relative;
+}
+
+.main-menu ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    display: block;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.main-menu ul li a:hover {
+    background: #003366;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #0056b3;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 4px;
+    min-width: 140px;
+    z-index: 10;
+    flex-direction: column;
+    margin-top: 0.2em;
+}
+
+.main-menu ul li:hover > .submenu {
+    display: block;
+}
+
+.submenu li a {
+    padding: 0.5em 1em;
+    font-size: 0.95em;
+    white-space: nowrap;
+}
+
+main {
+    padding: 2em;
+    text-align: center;
+}
+
+footer {
+    background: #003366;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+.activo-form {
+    max-width: 700px;
+    margin: 2em auto;
+    background: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em 2em;
+    align-items: center;
+}
+
+.activo-form label {
+    font-weight: bold;
+    margin-bottom: 0.3em;
+    text-align: left;
+}
+
+.activo-form input[type="text"] {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.checkbox-label {
+    grid-column: 1 / span 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 0.5em;
+}
+
+.form-buttons {
+    grid-column: 1 / span 2;
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    margin-top: 1em;
+}
+
+.form-buttons button {
+    flex: 1 1 0;
+    padding: 0.7em 0;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin: 0;
+}
+
+.form-buttons button:hover {
+    background: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 800px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 1em;
+    }
+    .main-header h1 {
+        font-size: 1em;
+        margin-top: 0.5em;
+    }
+    .menu-toggle {
+        display: block;
+        position: absolute;
+        right: 1em;
+        top: 1em;
+    }
+    .main-menu ul {
+        flex-direction: column;
+        gap: 0;
+        display: none;
+        width: 100%;
+        background: #0056b3;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: 100;
+    }
+    .main-menu ul.open {
+        display: flex;
+    }
+    .main-menu ul li {
+        width: 100%;
+    }
+    .main-menu ul li a {
+        padding: 1em;
+        border-radius: 0;
+    }
+    .submenu {
+        position: static;
+        min-width: 0;
+        box-shadow: none;
+        margin-top: 0;
+    }
+    .submenu.open {
+        display: block;
+    }
+    .main-menu ul li:hover > .submenu {
+        display: none;
+    }
+    .activo-form {
+        grid-template-columns: 1fr;
+    }
+    .form-buttons {
+        flex-direction: column;
+    }
+}
