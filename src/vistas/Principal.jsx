@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // <-- Aquí agregamos la importación
+import Menu from '../componentes/Layout/Menu'; // Importamos el componente de navegación
 
 const Principal = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
-  };
 
   return (
     <div>
@@ -14,20 +10,12 @@ const Principal = () => {
         <div className="header-content">
           <img src="img/logo.png" alt="Logo Liceo" className="logo-header" />
           <h1>Inventario de Existencia<br />Liceo Polivalente Lucila Godoy Alcayaga</h1>
-          <button className="menu-toggle" aria-label="Abrir menú" onClick={toggleMenu}>
+          <button className="menu-toggle" aria-label="Abrir menú" onClick={() => setMenuAbierto(!menuAbierto)}>
             &#9776;
           </button>
         </div>
         <nav className="main-menu">
-        <ul className={menuAbierto ? 'open' : ''}>
-                    <li><Link to="/activos">Activos</Link></li>
-                    <li><Link to="/usuarios">Usuarios</Link></li>
-                    <li><Link to="/departamentos">Departamentos</Link></li>
-                    <li><Link to="/altas">Altas</Link></li>
-                    <li><Link to="/bajas">Bajas</Link></li>
-                    <li><Link to="/traslados">Traslados</Link></li>
-                    <li><Link to="/stock">Stock</Link></li>
-                  </ul>
+          <Menu menuAbierto={menuAbierto} /> {/* Usamos el componente centralizado */}
         </nav>
       </header>
 

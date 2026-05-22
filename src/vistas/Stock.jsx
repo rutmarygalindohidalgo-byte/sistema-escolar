@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Menu from '../componentes/Layout/Menu'; // Importamos el componente de navegación
 
 const Stock = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [codigoBusqueda, setCodigoBusqueda] = useState('');
+  const [resultados, setResultados] = useState([]);
+  const [mostrarTabla, setMostrarTabla] = useState(false);
 
-  // --- Lógica de la tabla de Stock adaptada a React ---
+  // Datos simulados (en el futuro vendrán de tu base de datos)
   const stockData = [
     {codigo: "A01", nombre: "Notebook HP", stock: 12},
     {codigo: "A02", nombre: "Proyector Epson", stock: 5},
@@ -12,16 +15,8 @@ const Stock = () => {
     {codigo: "A04", nombre: "Mesa Reunión", stock: 7}
   ];
 
-  const [codigoBusqueda, setCodigoBusqueda] = useState('');
-  const [resultados, setResultados] = useState([]);
-  const [mostrarTabla, setMostrarTabla] = useState(false);
-
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
-  };
-
   const handleConsultar = (e) => {
-    e.preventDefault(); // Evita que la página se recargue al presionar Enter
+    e.preventDefault();
     const codigo = codigoBusqueda.trim().toUpperCase();
     const encontrados = stockData.filter(item => item.codigo === codigo);
     setResultados(encontrados);
@@ -32,7 +27,6 @@ const Stock = () => {
     setResultados(stockData);
     setMostrarTabla(true);
   };
-  // ---------------------------------------------------
 
   return (
     <div>
@@ -40,20 +34,12 @@ const Stock = () => {
         <div className="header-content">
           <img src="img/logo.png" alt="Logo Liceo" className="logo-header" />
           <h1>Inventario de Existencia<br />Liceo Polivalente Lucila Godoy Alcayaga</h1>
-          <button className="menu-toggle" aria-label="Abrir menú" onClick={toggleMenu}>
+          <button className="menu-toggle" aria-label="Abrir menú" onClick={() => setMenuAbierto(!menuAbierto)}>
             &#9776;
           </button>
         </div>
         <nav className="main-menu">
-          <ul className={menuAbierto ? 'open' : ''}>
-            <li><Link to="/activos">Activos</Link></li>
-            <li><Link to="/usuarios">Usuarios</Link></li>
-            <li><Link to="/departamentos">Departamentos</Link></li>
-            <li><Link to="/altas">Altas</Link></li>
-            <li><Link to="/bajas">Bajas</Link></li>
-            <li><Link to="/traslados">Traslados</Link></li>
-            <li><Link to="/stock">Stock</Link></li>
-          </ul>
+          <Menu menuAbierto={menuAbierto} /> {/* Menú centralizado */}
         </nav>
       </header>
 
@@ -76,10 +62,9 @@ const Stock = () => {
           </div>
         </form>
 
-        {/* Esta sección solo se dibuja si mostrarTabla es true */}
         {mostrarTabla && (
           <div id="resultado">
-            <table id="tablaStock" style={{ width: '100%', marginTop: '1em' }}>
+            <table style={{ width: '100%', marginTop: '1em' }}>
               <thead>
                 <tr>
                   <th>Código</th>

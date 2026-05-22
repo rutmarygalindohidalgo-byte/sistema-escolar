@@ -1,11 +1,38 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Menu from '../componentes/Layout/Menu';
+import BotonesAccion from '../componentes/Formularios/BotonesAccion';
 
 const Traslados = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
+  // Función para enviar los datos de Traslados al servidor
+  const handleAgregarTraslado = async () => {
+    const nuevoTraslado = {
+      codigo: document.getElementById('codigo').value,
+      cantidad: document.getElementById('cantidad').value,
+      origen: document.getElementById('Nombre_o').value,
+      destino: document.getElementById('Nombre_d').value,
+      horaIngreso: document.getElementById('Hora_b').value,
+      fechaTraslado: document.getElementById('Fecha_t').value,
+      horaTraslado: document.getElementById('Hora_t').value,
+      usuario: document.getElementById('Cod_Usu').value,
+      observacion: document.getElementById('Observacion').value
+    };
+
+    try {
+      const respuesta = await fetch('http://localhost:3001/api/traslados', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoTraslado)
+      });
+      
+      const resultado = await respuesta.json();
+      console.log("Servidor respondió:", resultado);
+      alert("¡Traslado registrado correctamente!");
+    } catch (error) {
+      console.error("Error al conectar:", error);
+      alert("No se pudo conectar con el servidor.");
+    }
   };
 
   return (
@@ -14,26 +41,18 @@ const Traslados = () => {
         <div className="header-content">
           <img src="img/logo.png" alt="Logo Liceo" className="logo-header" />
           <h1>Inventario de Existencia<br />Liceo Polivalente Lucila Godoy Alcayaga</h1>
-          <button className="menu-toggle" aria-label="Abrir menú" onClick={toggleMenu}>
+          <button className="menu-toggle" aria-label="Abrir menú" onClick={() => setMenuAbierto(!menuAbierto)}>
             &#9776;
           </button>
         </div>
         <nav className="main-menu">
-          <ul className={menuAbierto ? 'open' : ''}>
-            <li><Link to="/activos">Activos</Link></li>
-            <li><Link to="/usuarios">Usuarios</Link></li>
-            <li><Link to="/departamentos">Departamentos</Link></li>
-            <li><Link to="/altas">Altas</Link></li>
-            <li><Link to="/bajas">Bajas</Link></li>
-            <li><Link to="/traslados">Traslados</Link></li>
-            <li><Link to="/stock">Stock</Link></li>
-          </ul>
+          <Menu menuAbierto={menuAbierto} />
         </nav>
       </header>
 
       <main>
         <h2>Registro de Traslado</h2>
-        <form className="activo-form">
+        <form className="activo-form" onSubmit={(e) => e.preventDefault()}>
           <label htmlFor="codigo">Código de Activo:</label>
           <input type="text" id="codigo" name="codigo" required maxLength="10" />
 
@@ -50,10 +69,10 @@ const Traslados = () => {
           <input type="text" id="Hora_b" name="Hora_b" />
 
           <label htmlFor="Fecha_t">Fecha Traslado :</label>
-          <input type="datetime" id="Fecha_t" name="Fecha_t" />
+          <input type="date" id="Fecha_t" name="Fecha_t" />
 
           <label htmlFor="Hora_t">Hora Traslado :</label>
-          <input type="datetime" id="Hora_t" name="Hora_t" />
+          <input type="time" id="Hora_t" name="Hora_t" />
 
           <label htmlFor="Cod_Usu">Codigo de usuario :</label>
           <input type="text" id="Cod_Usu" name="Cod_Usu" />
@@ -61,11 +80,8 @@ const Traslados = () => {
           <label htmlFor="Observacion">Observacion :</label>
           <input type="text" id="Observacion" name="Observacion" />
 
-          <div className="form-buttons">
-            <button type="submit">Agregar</button>
-            <button type="button">Modificar</button>
-            <button type="button">Eliminar</button>
-          </div>
+          {/* Pasamos la función al componente */}
+          <BotonesAccion onAgregar={handleAgregarTraslado} />
         </form>
       </main>
 

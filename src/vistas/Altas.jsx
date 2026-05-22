@@ -1,11 +1,36 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Menu from '../componentes/Layout/Menu';
+import BotonesAccion from '../componentes/Formularios/BotonesAccion';
 
 const Altas = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuAbierto(!menuAbierto);
+  // Lógica para enviar los datos al Backend
+  const handleAgregar = async () => {
+    const nuevoActivo = {
+      codigo: document.getElementById('codigo').value,
+      cantidad: document.getElementById('cantidad').value,
+      fecha: document.getElementById('Fecha_i').value,
+      hora: document.getElementById('Hora_i').value,
+      doc: document.getElementById('Num_Doc').value,
+      usuario: document.getElementById('Cod_Usu').value,
+      observacion: document.getElementById('Observacion').value
+    };
+
+    try {
+      const respuesta = await fetch('http://localhost:3001/api/altas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoActivo)
+      });
+      
+      const resultado = await respuesta.json();
+      console.log("Respuesta del servidor:", resultado);
+      alert("¡Dato enviado correctamente al servidor!");
+    } catch (error) {
+      console.error("Error al conectar:", error);
+      alert("No se pudo conectar con el servidor. ¿Está corriendo?");
+    }
   };
 
   return (
@@ -13,21 +38,11 @@ const Altas = () => {
       <header className="main-header">
         <div className="header-content">
           <img src="img/logo.png" alt="Logo Liceo" className="logo-header" />
-          <h1>Inventario de Existencia<br />Liceo Polivalente Lucila Godoy Alcayaga</h1>
-          <button className="menu-toggle" aria-label="Abrir menú" onClick={toggleMenu}>
-            &#9776;
-          </button>
+          <h1>Inventario de Existencia</h1>
+          <button className="menu-toggle" onClick={() => setMenuAbierto(!menuAbierto)}>&#9776;</button>
         </div>
         <nav className="main-menu">
-          <ul className={menuAbierto ? 'open' : ''}>
-            <li><Link to="/activos">Activos</Link></li>
-            <li><Link to="/usuarios">Usuarios</Link></li>
-            <li><Link to="/departamentos">Departamentos</Link></li>
-            <li><Link to="/altas">Altas</Link></li>
-            <li><Link to="/bajas">Bajas</Link></li>
-            <li><Link to="/traslados">Traslados</Link></li>
-            <li><Link to="/stock">Stock</Link></li>
-          </ul>
+          <Menu menuAbierto={menuAbierto} />
         </nav>
       </header>
 
@@ -55,17 +70,10 @@ const Altas = () => {
           <label htmlFor="Observacion">Observacion :</label>
           <input type="text" id="Observacion" name="Observacion" />
 
-          <div className="form-buttons">
-            <button type="submit">Agregar</button>
-            <button type="button">Modificar</button>
-            <button type="button">Eliminar</button>
-          </div>
+          {/* Pasamos la función al componente */}
+          <BotonesAccion onAgregar={handleAgregar} />
         </form>
       </main>
-
-      <footer>
-        <p>&copy; 2025 Liceo Polivalente Lucila Godoy Alcayaga - San Bernardo</p>
-      </footer>
     </div>
   );
 };
